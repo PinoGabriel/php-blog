@@ -27,29 +27,32 @@ require_once "config.php";
 
         <h1 class="text-center mt-5">Posts</h1>
 
-        <?php $query = "SELECT * FROM posts"; ?>
-        <?php $result = $mysqli->query($query); ?>
-        <?php while ($array = $result->fetch_array()) { ?>
-
+        <?php
+        // Query per ottenere i dettagli del post con la relativa categoria
+        $query = "SELECT posts.*, categories.name AS category_name FROM posts INNER JOIN categories ON posts.category_id = categories.id";
+        $result = $mysqli->query($query);
+        while ($array = $result->fetch_array()) {
+        ?>
             <div class="row m-5">
                 <div class="card col-12">
                     <img src="<?php echo $array['image']; ?>" class="card-img-top" alt="<?php echo $array['title']; ?>">
                     <div class="card-body">
-                        <h5 class="card-title"> <?php echo $array['title']; ?></h5>
-                        <p class="card-text"> <?php echo $array['content']; ?></p>
+                        <h5 class="card-title"><?php echo $array['title']; ?></h5>
+                        <p class="card-text"><?php echo $array['content']; ?></p>
+                        <div>
+                            <span class="badge my-2 bg-warning"><?php echo $array['category_name']; ?></span> <!-- Visualizzazione della categoria come badge -->
+                        </div>
                         <a href="page.php?id=<?php echo $array['id']; ?>" class="btn btn-primary">Mostra il Post</a>
                     </div>
                 </div>
             </div>
-
         <?php } ?>
 
         <?php $mysqli->close(); ?>
 
     </div>
 
-
-
 </body>
+
 
 </html>

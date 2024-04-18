@@ -12,9 +12,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $titolo = $mysqli->real_escape_string($_POST["titolo"]);
     $contenuto = $mysqli->real_escape_string($_POST["contenuto"]);
     $user_id = $_SESSION["id"];
+    $category_id = $_POST["categoria_id"]; // Aggiunto per salvare l'ID della categoria selezionata
 
     // Inserimento del nuovo post nel database
-    $sql = "INSERT INTO posts (title, content, user_id) VALUES ('$titolo', '$contenuto', $user_id)";
+    $sql = "INSERT INTO posts (title, content, user_id, category_id) VALUES ('$titolo', '$contenuto', $user_id, $category_id)";
     if ($mysqli->query($sql) === TRUE) {
         $_SESSION['post_success'] = true; // Imposta una variabile di sessione per indicare il successo del post
         header('Location: ' . $_SERVER['PHP_SELF']); // Redirect per evitare il reinvio del modulo
@@ -57,6 +58,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="mb-3">
                     <label for="contenuto" class="form-label">Contenuto</label>
                     <textarea class="form-control" id="contenuto" name="contenuto" rows="3" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="categoria_id" class="form-label">Categoria</label>
+                    <select class="form-select" id="categoria_id" name="categoria_id" required>
+                        <option value="">Seleziona una categoria</option>
+                        <?php
+                        // Query per ottenere la lista delle categorie dal database
+                        $query = "SELECT * FROM categories";
+                        $result = $mysqli->query($query);
+                        if ($result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                                echo "<option value='" . $row['id'] . "'>" . $row['name'] . "</option>";
+                            }
+                        }
+                        ?>
+                    </select>
                 </div>
                 <button type="submit" class="btn btn-success mb-5">Invia</button>
             </form>

@@ -40,6 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_post'])) {
         <div>
             <a href="logout.php" class="btn btn-primary">Disconnetti</a>
             <a href="crea-post.php" class="btn btn-success">Crea Post</a>
+            <a href="crea-categoria.php" class="btn btn-warning">Crea Categoria</a>
         </div>
     </header>
 
